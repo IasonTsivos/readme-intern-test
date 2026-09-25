@@ -1,0 +1,10 @@
+{
+  "name": "readme-intern",
+  "description": "Follows your README on a clean machine, finds where a new user gets stuck, fixes it, and keeps it working in CI.",
+  "version": "0.1.0",
+  "author": { "name": "Iason Tsivos" },
+  "homepage": "https://github.com/IasonTsivos/readme-intern",
+  "repository": "https://github.com/IasonTsivos/readme-intern",
+  "license": "MIT",
+  "keywords": ["readme", "documentation", "onboarding", "quickstart", "ci", "docs-testing", "developer-experience"]
+}

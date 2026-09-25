@@ -1,0 +1,6 @@
+{
+  "image": "python:3.11-bookworm",
+  "skip": [
+    {"match": "claude \"does my README", "reason": "starts an interactive Claude Code session; the demo it opens is covered by tests/smoke.sh"}
+  ]
+}

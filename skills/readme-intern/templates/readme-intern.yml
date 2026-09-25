@@ -1,0 +1,56 @@
+# Follows README.md in a clean container and fails when a new user would get stuck.
+# Installed by readme-intern. Settings live in .readme-intern/config.json.
+name: readme-intern
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "README*"
+      - "docs/**"
+      - ".readme-intern/**"
+      - "package.json"
+      - "*lock*"
+      - "pyproject.toml"
+      - "requirements*.txt"
+      - "Makefile"
+      - "go.mod"
+      - "Cargo.toml"
+      - ".github/workflows/readme-intern.yml"
+  pull_request:
+  schedule:
+    - cron: "23 6 * * 1" # weekly: dependencies move even when the README doesn't
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quickstart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract README steps
+        run: python3 .readme-intern/bin/extract_steps.py --repo . > "$RUNNER_TEMP/plan.json"
+
+      - name: Follow the README in a clean container
+        run: python3 .readme-intern/bin/run_steps.py --plan "$RUNNER_TEMP/plan.json" --out readme-intern-out
+
+      - name: Report
+        if: always()
+        run: |
+          if [ -f readme-intern-out/results.json ]; then
+            python3 .readme-intern/bin/report.py --plan "$RUNNER_TEMP/plan.json" \
+              --results readme-intern-out/results.json >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: readme-intern-logs
+          path: readme-intern-out
+          if-no-files-found: ignore

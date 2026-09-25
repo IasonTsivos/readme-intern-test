@@ -1,0 +1,61 @@
+{
+  "skill_name": "readme-intern",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Does my README actually work? I'm about to post this repo on Hacker News.",
+      "setup": "bash examples/make-demo.sh /tmp/rp-eval-1 && cd /tmp/rp-eval-1",
+      "expected_output": "Static findings reported first (version drift 3.9 vs 3.11, gitignored .env.example, missing scripts/seed.py, missing make target run). Clean run stops at step 4. README fixed (3.11+, seed_db.py, make serve), .env.example un-ignored, Makefile '. .env' changed to '. ./.env'. Final run passes with the server answering on port 8000. REPORT.md written. CI lock-in offered, not installed without asking.",
+      "assertions": [
+        "Reports the gitignored .env.example with README line 15",
+        "Final run verdict is pass",
+        "Does not delete or skip any Quickstart step to get a pass",
+        "Lists the Makefile and .gitignore edits separately from the README diff",
+        "Asks before adding the GitHub workflow or badge"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Someone opened an issue saying they can't get this running from the README. Can you check the getting started steps on a fresh machine?",
+      "setup": "A Node repo whose README says `npm install && npm run dev`, with a pnpm-lock.yaml and no \"dev\" script (it is called \"start\").",
+      "expected_output": "Flags the missing dev script and the npm-vs-pnpm lockfile mismatch before running; clean run in a node image fails at `npm run dev`; README fixed to the right script and package manager; rerun passes with the server detected.",
+      "assertions": [
+        "Uses a node image matching the README's stated version",
+        "Identifies package-manager-mismatch",
+        "Server step is probed on a port rather than waited on forever"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Check whether https://github.com/pallets/flask's README quickstart works for a newcomer.",
+      "setup": "Network access to GitHub. Docker available.",
+      "expected_output": "Clones to a scratch dir, runs only in Docker (third-party repo), writes app.py from the '# save this as app.py' block, and reports that `flask run` fails because the README never says to `pip install flask`. Frames it as a README gap, not a Flask bug. Does not open a PR or edit the upstream repo.",
+      "assertions": [
+        "Refuses --local for a third-party repo",
+        "Creates app.py from the README block",
+        "Reports 'flask: command not found' as a missing install step"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Test my README but I don't have Docker installed.",
+      "setup": "Demo repo; docker binary absent.",
+      "expected_output": "Runs with --local after saying clearly that host-installed tools can make broken steps look fine, and suggests Docker or the CI workflow for a true clean run.",
+      "assertions": [
+        "States the local-mode caveat before or with the result",
+        "Still reports static findings"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Verify the quickstart in our README. It needs an OPENAI_API_KEY.",
+      "setup": "Python repo whose quickstart exports OPENAI_API_KEY=<your-key> then runs a CLI that calls the API.",
+      "expected_output": "Uses a dummy key through config env to get as far as possible, skips the live API call with a written reason, and checks the README says where to get a key. Never asks for or stores a real key.",
+      "assertions": [
+        "No real secret written to config.json",
+        "Placeholder finding reported",
+        "Skipped step has a reason in config"
+      ]
+    }
+  ]
+}

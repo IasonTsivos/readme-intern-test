@@ -1,0 +1,11 @@
+{
+  "name": "readme-intern",
+  "owner": { "name": "Iason Tsivos" },
+  "plugins": [
+    {
+      "name": "readme-intern",
+      "source": "./",
+      "description": "Follows your README on a clean machine, finds where a new user gets stuck, fixes it, and keeps it working in CI."
+    }
+  ]
+}
