@@ -14,7 +14,7 @@ readme-intern is a Claude skill that plays the new intern: a fresh laptop, zero 
   6. End card: the green "README works" badge.
   Record with the demo repo: bash examples/make-demo.sh
 -->
-![readme-intern getting stuck on a broken quickstart, then fixing it](docs/demo.gif)
+![readme-intern getting stuck on a broken quickstart, then fixing it](docs/intern.png)
 
 ```text
 Static check (nothing executed yet):
