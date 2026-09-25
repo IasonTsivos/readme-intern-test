@@ -1,9 +1,5 @@
 # readme-intern
 
-**We gave your README to an intern on their first day. Here's where they got stuck.**
-
-readme-intern is a Claude skill that plays the new intern: a fresh laptop, zero tribal knowledge, and a habit of doing *exactly* what your README says. It clones your repo into a clean container, pastes your commands one by one, and shows you the line where a newcomer gets stuck. Then it fixes the README (or the bug behind it) and tries again until the quickstart works.
-
 <!--
   GIF (docs/demo.gif, ~20s, 1200px wide). Shot list:
   1. Terminal, a repo on screen. Type: "does my README actually work?"
@@ -15,6 +11,10 @@ readme-intern is a Claude skill that plays the new intern: a fresh laptop, zero 
   Record with the demo repo: bash examples/make-demo.sh
 -->
 ![readme-intern getting stuck on a broken quickstart, then fixing it](docs/intern.png)
+
+**We gave your README to an intern on their first day. Here's where they got stuck.**
+
+readme-intern is a Claude skill that plays the new intern: a fresh laptop, zero tribal knowledge, and a habit of doing *exactly* what your README says. It clones your repo into a clean container, pastes your commands one by one, and shows you the line where a newcomer gets stuck. Then it fixes the README (or the bug behind it) and tries again until the quickstart works.
 
 ```text
 Static check (nothing executed yet):
