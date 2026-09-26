@@ -18,7 +18,7 @@
 ---
 
 <div align="center">
-  <img src="docs/header.png" alt="A puzzled intern trying to follow a README" width="100%">
+  <img src="docs/intern-header.png" alt="A puzzled intern trying to follow a README" width="100%">
 </div>
 
 ## The idea
