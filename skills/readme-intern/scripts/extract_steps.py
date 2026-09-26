@@ -144,7 +144,7 @@ def parse_blocks(text):
             start = i + 1
             body = []
             i += 1
-            while i < len(lines) and not re.match(r"^\s*" + re.escape(fence[0]) + "{" + str(len(fence)) + ",}\s*$", lines[i]):
+            while i < len(lines) and not re.match(r"^\s*" + re.escape(fence[0]) + "{" + str(len(fence)) + r",}\s*$", lines[i]):
                 body.append(lines[i][indent:] if lines[i][:indent].strip() == "" else lines[i])
                 i += 1
             i += 1

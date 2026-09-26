@@ -24,7 +24,7 @@ set -e
 [ $rc -eq 0 ] && { echo "FAIL: broken demo passed"; exit 1; }
 [ $rc -eq 2 ] && { echo "FAIL: environment did not start: $(python3 -c "import json;print(json.load(open('run1/results.json')).get('setup_error'))")"; exit 2; }
 first=$(python3 -c "import json;print(json.load(open('run1/results.json'))['summary']['first_failure']['id'])")
-[ "$first" = "4" ] || { echo "FAIL: expected first failure at step 4, got $first"; exit 1; }
+[ "$first" = "4" ] || { echo "FAIL: expected first failure at step 4, got $first. Log of step $first:"; cat "run1/step_$first.log"; exit 1; }
 echo "ok  broken README fails at step 4"
 
 sed -i.bak 's/Python 3.9+/Python 3.11+/; s#python scripts/seed.py#python scripts/seed_db.py#; s/make run/make serve/' README.md

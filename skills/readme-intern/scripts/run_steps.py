@@ -179,7 +179,11 @@ class DockerBackend(Backend):
         r = subprocess.run(args, capture_output=True, text=True)
         if r.returncode != 0:
             raise RuntimeError("docker run failed: " + r.stderr.strip()[-400:])
-        self._sh("mkdir -p /work %s && cp -a /src /work/.rp-src" % self.state)
+        # Copy without keeping host ownership: on CI the files belong to the runner user, and git
+        # refuses to clone a repo owned by someone else ("detected dubious ownership").
+        r = self._sh("mkdir -p /work %s && cp -R /src /work/.rp-src && chown -R \"$(id -u):$(id -g)\" /work/.rp-src" % self.state)
+        if r.returncode != 0:
+            raise RuntimeError("could not copy the repo into the container: " + (r.stderr or r.stdout).strip()[-300:])
         # sudo shim: most human readers have sudo; containers usually run as root without it.
         self._sh("command -v sudo >/dev/null 2>&1 || { printf '#!/bin/sh\\nwhile [ \"${1#-}\" != \"$1\" ]; do shift; done\\nexec \"$@\"\\n' > /usr/local/bin/sudo && chmod +x /usr/local/bin/sudo; }")
         self.image = image
